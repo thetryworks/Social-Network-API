@@ -72,17 +72,17 @@ const userController = {
         })
         .catch(err => res.status(400).json(err));
       },
-        
+        //pulls a friend by their id
       removeFriend({ params }, res) {
         User.findOneAndUpdate(
           {_id: params.userId },
-          { $push: { friends: params.friendId } },
+          { $pull: { friends: params.friendId } },
           { new: true }
         )
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.json(err));
       },
-
+    //deletes a user
       deleteUser({ params }, res) {
         User.findOneAndDelete({ _id: params.id })
           .then(dbUserData => {

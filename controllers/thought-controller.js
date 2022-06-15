@@ -1,6 +1,7 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+    //retrieve all thoughts with corresponding user id
     getAllThoughts(req, res) {
         Thought.find({})
         .populate({
@@ -16,7 +17,7 @@ const thoughtController = {
         });
     },
 
-    //get one thought by ID
+    //get one thought by ID and all of the user info
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
             .populate({
@@ -32,12 +33,12 @@ const thoughtController = {
            })
     },
 
-    //create thought
+    //create thought and save it to a certain user
     createThought({ params, body }, res) {
         Thought.create(body)
             .then(({ _id}) => {
                 return User.findOneAndUpdate(
-                    { username: body.username },
+                    { username: params.username },
                     { $push: { thoughts: _id } },
                     { new: true }
                 );
@@ -52,7 +53,7 @@ const thoughtController = {
             .catch(err => res.json(err));
     },
 
-    //add reaction
+    //add reaction to a thought byu that thought id
     createReaction ({ params, body}, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
