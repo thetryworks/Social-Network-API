@@ -31,7 +31,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ## Repository
 https://github.com/thetryworks/Social-Network-API
 
-https://share.vidyard.com/watch/9dtCPrtFJ1eDjKRfTjEuHP?
+https://share.vidyard.com/watch/GeYbBgm2zz5H316xKDcMn9?
 
 ## Contribution
 Made with ❤️ by [Nathaniel Hernandez]
