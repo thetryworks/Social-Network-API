@@ -19,7 +19,7 @@ const thoughtController = {
 
     //get one thought by ID and all of the user info
     getThoughtById({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtId })
             .populate({
                 path: 'username',
                 select: '-__v'
@@ -36,16 +36,16 @@ const thoughtController = {
     //create thought and save it to a certain user
     createThought({ params, body }, res) {
         Thought.create(body)
-            .then(({ _id}) => {
+            .then(({ _id }) => {
                 return User.findOneAndUpdate(
-                    { username: params.username },
+                    { _id: params.userId },
                     { $push: { thoughts: _id } },
                     { new: true }
                 );
             })
             .then(dbUserData => {
                 if (!dbUserData) {
-                    res.status(404).json({ message: 'No user found with this username!'});
+                    res.status(404).json({ message: 'Incorrect thought data!'});
                     return;
                 }
                 res.json(dbUserData);
@@ -53,7 +53,7 @@ const thoughtController = {
             .catch(err => res.json(err));
     },
 
-    //add reaction to a thought byu that thought id
+    //add reaction to a thought by that thought id
     createReaction ({ params, body}, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
@@ -73,7 +73,7 @@ const thoughtController = {
     //delete a reaction
     deleteReaction({ params }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.thoughtId },
+            { _id: params.reactionId },
             { $pull: { reactions: { reactionId: params.reactionId } } },
             { new: true }
         )
@@ -84,7 +84,7 @@ const thoughtController = {
     //update a thought by Id
     updateThought({ params, body }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.id }, 
+            { _id: params.thoughtId }, 
             body,
             { new: true, runValidators: true }
         )
@@ -99,7 +99,7 @@ const thoughtController = {
 
     //delete a thought by id
     deleteThought({ params, body}, res) {
-        Thought.findOneAndDelete({ _id: params.id })
+        Thought.findOneAndDelete({ _id: params.thoughtId })
         .then(deletedThought => {
             if (!deletedThought) {
                 return res.status(404).json({ message: 'No thought with this ID!'})
