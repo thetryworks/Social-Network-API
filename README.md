@@ -23,7 +23,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 *Node  
 *Mongoose  
 *MongoDB  
-*Express
+*Express\
 *Moment.js
 
 
